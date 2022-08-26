@@ -2,6 +2,7 @@
 
 \usepackage{babel}
 \usepackage{csquotes}
+\usepackage{amsmath}
 
 \title{Funktionelle Abhängigkeit und Graphen}
 \author{Oshgnacknak}
@@ -17,8 +18,39 @@ gewisse Eigenschaften erfüllen.
 Für die Analyse dieser Eigenschaften
 Sind funktionelle Abhängigkeiten essentiell.
 
-Dabei ist eine funktionelle Abhängigkeit
+\section*{Funktionelle Abhängigkeiten}
+Eine funktionelle Abhängigkeit
 (im Folgenden nur noch \enquote{FD}, für \emph{functional dependency})
-eine Relation zwischen zwei Attributmengen.
+ist eine Relation zwischen zwei Attributmengen.
+Nämlich die \enquote{folgt aus} Beziehung:
+Wir schreiben
+$$
+    A_0, \dots, A_n \to 
+    B_0, \dots, B_m
+$$
+wenn in einer Tabelle (Relation) alle Zeilen (Tupel),
+die in den Spalten (Attributen) $A_i$ übereinstimmen
+auch in den Spalten $B_i$ übereinstimmen.
 
+Als Beispiel soll folgende Tabelle dienen:
+\begin{center}
+\begin{tabular}{ c | c | c }
+    Straße & PLZ & Ort \\
+    \hline
+    Heinertstraße & 37308 & Wingerode \\
+    Hatter Straße & 37308 & Wingerode \\
+    Hohenwestedter & 88499 & Emeringen \\
+    Neubanz & 88500 & Emeringen \\
+    Heinertstraße & 56283 & Beulich \\
+\end{tabular}
+\end{center}
+Kennt man die PLZ, ist auch der Ort eindeutig
+$$
+    \text{PLZ} \to \text{Ort}
+$$
+Kennt man wiederrum den Ort und die Straße,
+kann man auf die PLZ zurück schließen
+$$
+    \text{Straße}, \text{Ort} \to \text{PLZ}
+$$
 \end{document}
