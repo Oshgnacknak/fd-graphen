@@ -480,5 +480,74 @@ Hier nochmal die Hierarchie in einer Liste:
     \item PK: Speziell ausgewählter SK
 \end{enumerate}
 
+\section*{Bestimmen der Schlüsselkandidaten}
+Wir wollen uns an folgenden Beispiel anschauen,
+wie man SKs aus dem Graphen zu eine FD Menge auslesen kann.
+Gegeben also die FDs:
+$$
+    A  \to C,\;
+    B  \to DE,\;
+    C  \to F,\;
+    F  \to G,\;
+    FG \to A,\;
+    E  \to G,\;
+    A  \to F
+$$
+Und deren Graph:
+\begin{center}
+    \tikz{
+        \node[] (a)  at (0,    0)     {$A$};
+        \node[] (c)  at (0,    -1.2)  {$C$};
+        \node[] (b)  at (0,    -2.4)  {$B$};
+        \node[] (d)  at (-1.2, -2.4)  {$D$};
+        \node[] (e)  at (-2.4, -2.4)  {$E$};
+        \node[] (f)  at (-2.4, -1.2)  {$F$};
+        \node[] (g)  at (-2.4, -0.0)  {$G$};
+        \node[] (fg)  at (-1.2,   -0.0)  {$FG$};
+
+        \graph{
+            (a) -> (c);
+            (a) -> (f);
+
+            (b) -> (d);
+            (b) ->[bend right] (e);
+
+            (e) ->[bend left] (g);
+
+            (f) -> (g);
+
+            (fg) -> (f);
+            (fg) -> (g);
+            (fg) -> (a);
+            
+            (c) -> (f);
+        }   
+    }       
+\end{center}
+Bevor wir uns weitere Gedanken machen,
+sollte uns zwei Dinge beim betrachten des Graphen auffallen:
+\begin{enumerate}
+    \item Der Knoten $B$ kann von keinem anderen Knoten erreicht werden.
+        Damit muss er teil jedes SKs sein.
+    \item Die Knoten $D$ und $G$ haben keine ausgehenden Kanten.
+        Sie sind uninteressant.
+\end{enumerate}
+Wir wollen die Hülle aller noch relevanten Knoten berechnen:
+\begin{align*}
+    A^+ &= ACFG \\
+    B^+ &= BDEG \\
+    C^+ &= ACFG \\
+    E^+ &= EG \\
+    F^+ &= ACFG
+\end{align*}
+$A$, $C$ und $F$ haben die gleiche Hülle
+und sind damit austauschbar.
+Wir nehmen $B$ hinzu und haben
+jeweils alles abgedeckt.
+Es ergeben sich die SKs:
+$$
+    AB, CB, FB
+$$
+
 
 \end{document}
