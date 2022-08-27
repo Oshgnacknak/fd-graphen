@@ -3,6 +3,9 @@
 \usepackage{babel}
 \usepackage{csquotes}
 \usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{graphs}
 
 \title{Funktionelle Abhängigkeit und Graphen}
 \author{Oshgnacknak}
@@ -108,5 +111,130 @@ $$
 $$
 schreiben, solange wir alle drei FDs hinschreiben.
 Das ist auch wichtig, denn eine Kante
-in einem Graph hat immer genau einen Zielknoten.  
+in einem Graph hat immer genau einen Zielknoten.
+
+\section*{Funktionelle Abhängigkeiten als Graphen}
+Zur einer gegebenen Menge an FDs können
+wir uns nun endlich überlegen,
+wie deren Graph aus zu stehen hat.
+
+Zunächst bekommt jede Attributmenge
+auf der Linken Seite einen Knoten,
+der mit der Menge selbst beschriftet ist.
+Sind z.B. die FDs
+$$
+    AB \to C,\;
+    CD \to E,\;
+    EF \to AGH
+$$
+gegeben, brauchen die Knoten $AB$, $CD$ und $EF$.
+\begin{center}
+    \tikz{
+        % \node[] (a) at (0,0) {$A$};
+        \node[] (ab) at (1,0) {$AB$};
+        % \node[] (b) at (1,-1) {$B$};
+        % \node[] (c) at (1,-2) {$C$};
+        \node[] (cd) at (1,-3) {$CD$};
+        % \node[] (d) at (0,-3) {$D$};
+        % \node[] (e) at (-1,-3) {$E$};
+        \node[] (ef) at (-2,-3) {$EF$};
+        % \node[] (f) at (-2,-2) {$F$};
+        % \node[] (g) at (-2,-1) {$G$};
+        % \node[] (h) at (-2,0) {$H$};
+
+        \graph{
+            % (ab) -> (a);
+            % (ab) -> (b);
+            % (ab) ->[bend left] (c);
+
+            % (cd) -> (c);
+            % (cd) -> (d);
+            % (cd) ->[bend left] (e);
+
+            % (ef) -> (e);
+            % (ef) -> (f);
+            % (ef) ->[bend left] (g);
+            % (ef) ->[bend left] (h);
+            % (ef) -> (a);
+        }
+    }
+\end{center}
+Für die rechten Seiten bekommt
+jedes Attribute seinen eigenen Knoten.
+Hier also $C$, $E$, $A$, $G$, und $H$.
+Die Kanten ergeben sich eben aus den FDs.
+\begin{center}
+    \tikz{
+        \node[] (a) at (0,0) {$A$};
+        \node[] (ab) at (1,0) {$AB$};
+        % \node[] (b) at (1,-1) {$B$};
+        \node[] (c) at (1,-2) {$C$};
+        \node[] (cd) at (1,-3) {$CD$};
+        % \node[] (d) at (0,-3) {$D$};
+        \node[] (e) at (-1,-3) {$E$};
+        \node[] (ef) at (-2,-3) {$EF$};
+        % \node[] (f) at (-2,-2) {$F$};
+        \node[] (g) at (-2,-1) {$G$};
+        \node[] (h) at (-2,0) {$H$};
+
+        \graph{
+            % (ab) -> (a);
+            % (ab) -> (b);
+            (ab) ->[bend left] (c);
+
+            % (cd) -> (c);
+            % (cd) -> (d);
+            (cd) ->[bend left] (e);
+
+            % (ef) -> (e);
+            % (ef) -> (f);
+            (ef) ->[bend left] (g);
+            (ef) ->[bend left] (h);
+            (ef) -> (a);
+        }
+    }
+\end{center}
+Wir sind aber noch nicht fertig.
+Wie wir uns überlegt haben,
+können wir die Attributmenge
+auf der linken Seite mit in die rechte übernehmen.
+$$
+    A_i \to B_i \implies
+    A_i \to A_i, B_i 
+$$
+
+Diese Kanten sind im späteren Verlauf
+auch wichtig und wir wollen sie auch gleich einzeichnen.
+\begin{center}
+    \tikz{
+        \node[] (a) at (0,0) {$A$};
+        \node[] (ab) at (1,0) {$AB$};
+        \node[] (b) at (1,-1) {$B$};
+        \node[] (c) at (1,-2) {$C$};
+        \node[] (cd) at (1,-3) {$CD$};
+        \node[] (d) at (0,-3) {$D$};
+        \node[] (e) at (-1,-3) {$E$};
+        \node[] (ef) at (-2,-3) {$EF$};
+        \node[] (f) at (-2,-2) {$F$};
+        \node[] (g) at (-2,-1) {$G$};
+        \node[] (h) at (-2,0) {$H$};
+
+        \graph{
+            (ab) -> (a);
+            (ab) -> (b);
+            (ab) ->[bend left] (c);
+
+            (cd) -> (c);
+            (cd) -> (d);
+            (cd) ->[bend left] (e);
+
+            (ef) -> (e);
+            (ef) -> (f);
+            (ef) ->[bend left] (g);
+            (ef) ->[bend left] (h);
+            (ef) -> (a);
+        }
+    }
+\end{center}
+
 \end{document}
