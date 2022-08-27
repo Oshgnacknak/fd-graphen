@@ -247,8 +247,49 @@ auch wichtig und wir wollen sie auch gleich einzeichnen.
     }
 \end{center}
 
+\subsection*{Erreichbarkeit und die Hülle}
+Bei FDs ist der Begriff der Attributhülle 
+von großer Bedeutung.
+Die Attributhülle von eine
+gegebenen Attributmenge $A_i$
+ist die Menge aller Attibute, 
+die funktionell von $A_i$ abhängig.
+Wir schreiben $A_i^+$ für die Attributhülle von $A_i$.
+
+Wie wir sehen werden,
+sind das alle Knoten in unserem Graphen,
+die von $A_i^+$ aus erreichbar sind,
+denn auch bei dieser Fragestellung
+gilt Reflexivität und Transitivität.
+
+Wir können uns somit für die Berechnung der Hülle
+vollständig auf den Graphen konzentrieren.
+
+Nehmen wir als Beispiel die FDs
+$$
+    A  \to B,\;
+    AB \to C,\;
+    CD \to E,\;
+    EF \to AGH
+$$
+und bestimmen die Hülle $EF^+$ von $EF$.
+Hier der Graph:
+\begin{center}
+    \tikz{
+        \node[] (a)  at (0,0)   {$A$};
+        \node[] (ab) at (1,0)   {$AB$};
+        \node[] (b)  at (1,-1)  {$B$};
+        \node[] (c)  at (1,-2)  {$C$};
+        \node[] (cd) at (1,-3)  {$CD$};
+        \node[] (d)  at (0,-3)  {$D$};
+        \node[] (e)  at (-1,-3) {$E$};
+        \node[] (ef) at (-2,-3) {$EF$};
+        \node[] (f)  at (-2,-2) {$F$};
+        \node[] (g)  at (-2,-1) {$G$};
+        \node[] (h)  at (-2,0)  {$H$};
 
         \graph{
+            (a)  -> (b);
             (ab) -> (a);
             (ab) -> (b);
             (ab) ->[bend left] (c);
@@ -265,5 +306,49 @@ auch wichtig und wir wollen sie auch gleich einzeichnen.
         }
     }
 \end{center}
+Zunächst gilt Reflexivität und damit
+$$
+    EF \subseteq EF^+
+$$
+In anderen Worten: $EF$ ist von sich selber aus erreichbar.
+
+Dann können wir alle Knoten hinzunehmen,
+die direkt von $EF$ aus erreichbar sind.
+$$
+    AGH \subseteq EF^+  
+$$
+Es kommen nur $AGH$ dazu.
+
+Vom Knoten $EF$ aus können wir nichts mehr lernen,
+aber wir haben festgestellt, ist $EF$ bestimmt,
+dann ist auch $A$ festgelegt.
+Wir können die Berechnung also mit $A$ fortsetzen.
+$$
+    EF^+ = EF^+ \cup A^+
+$$
+Hier kommt die Transitivität von FDs zu trage.
+
+Durch $A^+$ kommt sogleich der Knoten $B$ hinzu.
+$$
+    B \subseteq EF^+
+$$
+Wir nehmen Zwischenstand und es gilt
+$$
+    ABEFGH \subseteq EF^+
+$$
+Das gibt uns, dass wenn $EF$ bestimmt ist,
+auch $AB$ bestimmt fest steht.
+Auch wenn hierzu noch keine Kante eingezeichnet ist,
+haben wir dennoch gezeigt, dass es diese gibt
+und wir können mit $AB^+$ weiter machen.
+$$
+    EF^+ = EF^+ \cup A^+ \cup AB^+
+$$
+Es kommst aber nur noch $C$ dazu.
+Wir habe die Hülle bestimmt.
+$$
+    EF^+ = ABCEFGH
+$$
+
 
 \end{document}
