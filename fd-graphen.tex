@@ -402,5 +402,57 @@ gegebenen Attributsmenge mindestens
 $2^n$ Knoten geben muss.
 Es gibt dann noch weitaus mehr Kanten.
 
+\section*{Schlüssel}
+Keine Datenbank kommt ohne Schlüssel aus.
+Schlüssel sind dafür relevant,
+Zeilen in unseren Tabellen eindeutig zu bestimmen.
+
+Daher die Definition:
+Eine Attributmenge ist ein Schlüssel,
+gdw. alle Attribute in ihrer Hülle sind.
+An anderen Worten: Sind die Schlüsselwerte bestimmt,
+stehen alle Werte fest.
+
+In unseren Graphen heißt das,
+Schlüssel sind alle Knoten,
+von denen aus der gesamte Graph erreichbar ist.
+
+Manche sagen nennen Schlüssel auch \enquote{Superschlüssel}.
+Ich halte diesen Begriff für missverständlich,
+da dies noch die schwächste Eigenschaft ist.
+
+Ein Schlüssel heißt einfach,
+gdw. er nur ein Element hat.
+
+Z.B. ist im folgenden Graphen $A$ einfach,
+$AB$ aber nicht.
+\begin{center}
+\tikz\graph{
+    "$AB$" -> "$A$" -> {"$B$", "$C$"}
+};
+\end{center}
+Ist ein Schlüssel nicht einfach,
+ist er zusammengesetzt.
+Im obigen Beispiel also der Schlüssel $AB$.
+
+Ein Schüssel ist minimal,
+wenn es keine kleineren Schlüssel
+im Sinne der Teilmengenordnung \enquote{$\subseteq$} gibt.
+Z.B ist hier der Schlüssel $AB$ minimal, $ABC$ aber nicht.
+\begin{center}
+\tikz{
+    \node[] (abc) at (0,0)   {$ABC$};
+    \node[] (ab)  at (1.2,0) {$AB$};
+    \node[] (c)   at (0, -1) {$C$};
+    \node[] (d)   at (1,-1)  {$D$};
+
+    \graph{
+        (abc) -> (ab);
+        (ab) -> (c);
+        (ab) -> (d);
+    }
+}
+\end{center}
+
 
 \end{document}
