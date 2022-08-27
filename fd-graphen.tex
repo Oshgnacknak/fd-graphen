@@ -350,5 +350,57 @@ $$
     EF^+ = ABCEFGH
 $$
 
+\section*{Die tatsächliche Größe des Graphen}
+Wie gerade gesehen haben wir nicht alle Kanten angegeben.
+Tatsächlich haben wir auch nicht alle Knoten hingemalt,
+z.B. der Knoten $ACE$ fehlt.
+Wir müssten auch Folgendes in unserem Graphen haben.
+\begin{center}
+\tikz{
+    \node[] (ace) at (0,0)   {$ACE$};
+
+    \node[] (ac) at (0,1)   {$AC$};
+    \node[] (ae) at (-1,-1) {$AE$};
+    \node[] (ce) at (1,-1)  {$CE$};
+
+    \node[] (a) at (-1,0)  {$A$};
+    \node[] (c) at (1,0)   {$C$};
+    \node[] (e) at (0,-1)  {$E$};
+
+    \graph{
+        (ace) -> (ac);
+        (ace) -> (ae);
+        (ace) -> (ce);
+
+        (ace) -> (a);
+        (ace) -> (c);
+        (ace) -> (e);
+
+        (ac) -> (a);
+        (ac) -> (c);
+
+        (ae) -> (a);
+        (ae) -> (e);
+
+        (ce) -> (c);
+        (ce) -> (e);
+    }
+}
+\end{center}
+Das wird aber sehr schnell unübersichtlich
+und deswegen verzichten wir auf
+ein Großteil dieser Informationen.
+
+Das ist aber nicht zu unserem Nachteil,
+denn wenn wir später Normalisieren wollen,
+werden wir feststellen,
+dass wir tatsächlich noch mehr Knoten
+und kanten aus unseren Graphen verbannen wollen.
+
+Man mache sich klar, dass es zu einer 
+gegebenen Attributsmenge mindestens
+$2^n$ Knoten geben muss.
+Es gibt dann noch weitaus mehr Kanten.
+
 
 \end{document}
