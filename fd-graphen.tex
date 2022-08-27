@@ -2,6 +2,7 @@
 
 % TODO: Replace Ai with { A0, ..., An } thoughout
 % TODO: Write out all Sets, ABC -> { A, B, C }
+% TODO: Try out https://tikz.dev/tikz-graphs#tikz/graphs/circular:placement
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -480,6 +481,12 @@ Hier nochmal die Hierarchie in einer Liste:
     \item PK: Speziell ausgewählter SK
 \end{enumerate}
 
+Jedes Attribut,
+das teil eines beliebigen SK ist,
+nennen wir \enquote{Primattribut}.
+Alle anderen nennen wir dementsprechend
+\enquote{Nichtprimattribute}.
+
 \section*{Bestimmen der Schlüsselkandidaten}
 Wir wollen uns an folgenden Beispiel anschauen,
 wie man SKs aus dem Graphen zu eine FD Menge auslesen kann.
@@ -530,7 +537,7 @@ sollte uns zwei Dinge beim betrachten des Graphen auffallen:
     \item Der Knoten $B$ kann von keinem anderen Knoten erreicht werden.
         Damit muss er teil jedes SKs sein.
     \item Die Knoten $D$ und $G$ haben keine ausgehenden Kanten.
-        Sie sind uninteressant.
+        Sie sind für die SKs uninteressant.
 \end{enumerate}
 Wir wollen die Hülle aller noch relevanten Knoten berechnen:
 \begin{align*}
@@ -549,5 +556,110 @@ $$
     AB, CB, FB
 $$
 
+\section*{Die drei Normalformen}
+\emph{
+    The key, the whole key, and nothing but the key.
+    So help me Codd!}
+
+Dieser Spruch soll dabei unterschützen,
+sich die ersten drei Normalformen zu merken.
+Wir werden uns diese im folgenden anschauen.
+Wir werden uns auch überlegen,
+welche eigenschaften die Graphen haben müssen
+um eine Normalform zu erfüllen.
+
+\subsection*{1. Normalform: The key}
+\emph{Eine Relation ist in 1. Normalform,
+    wenn alle Attributes Atomar sind.}
+
+Damit man überhaupt FDs und dann Schlüssel (daher \enquote{The Key}) bestimmen kann,
+darf in einer Spalte immer nur genau ein Wert stehen. 
+
+Da wir uns hauptsächlich mit FDs beschäftigen,
+gehen wir um weiteren Verlauf davon aus,
+dass alle Relation in 1. Normalform sind.
+
+\subsection*{2. Normalform: The whole key}
+\emph{Eine Relation ist in 2. Normalform,
+    wenn sie in 1. Normalform ist
+    und alle Nichtprimattribute vollständig
+    von jedem Schlüsselkandidat abhängen.}
+
+Wir müssen hierfür den Begriff der
+vollständigen Abhängigkeit definieren.
+Ein Attribut ist genau dann vollständigen
+von einer Attributmenge abhängen,
+wenn man kein Attribut aus der Attributmenge entfernen kann,
+ohne die Abhängigkeit zu verlieren.
+
+Im folgenden Beispiel ist $C$ vollständig von $AB$ abhängig:
+\begin{center}
+\tikz\graph{
+    "$A$" <- "$AB$" -> {"$C$", "$D$"};
+    "$A$" -> "$D$"
+};
+\end{center}
+$D$ hängt schon von $A$ ab,
+und ist damit nur partiell von $AB$ abhängig.
+
+\subsection*{3. Normalform: And nothing but the key}
+\emph{Eine Relation ist in 3. Normalform,
+    wenn sie in 2. Normalform ist
+    und alle Nichtprimattribute nicht transitiv
+    von einem SK abhängen.}
+
+Den Begriff der transitiven Abhängigkeit
+haben wird grundsätzlich schon oben kennen gelernt.
+Es gibt aber noch ein paar Details zu klären.
+Zur Erinnerung: $B$ ist hier direkt von $A$ abhängig:
+$$
+    A \to B \to C
+$$
+$C$ ist transitiv von $A$, über $B$, abhängig.
+
+Wichtig ist zusätzlich, dass eben nicht $B \to A$ gilt.
+Hier also nochmal die volle Definition:
+Eine Attributmenge $C_i$ ist genau dann transitiv
+von eine Attributmenge $A_i$ über $B_i$ abhängig, wenn
+$$
+    A_i \to B_i \to C_i
+$$
+aber nicht 
+$$
+    B_i \to A_i
+$$
+gilt.
+
+\subsection*{Beispiele}
+
+Die folgenden FDs sind nur in 1. Normalform:
+\begin{center}
+\tikz\graph{
+    "$AC$" -> {"$B$", "$A$"};
+    "$A$" -> "$B$"
+
+};
+\end{center}
+$B$ ist partiell von $AB$ abhängig.
+
+Hier ist eine FD Menge in 2. Normalform:
+\begin{center}
+\tikz\graph{
+    "$A$" -> {"$B$", "$C$", "$D$" -> "$E$"};
+};
+\end{center}
+Es gibt keine partiellen Abhängigkeiten,
+aber $E$ ist transitiv von $A$ abhängig.
+
+Und nun FDs in 3. Normalform:
+\begin{center}
+\tikz\graph{
+    "$A$" -> {"$B$", "$C$" -> "$D$", "$E$"};
+    "$C$" ->[bend right] "$A$"
+};
+\end{center}
+Es gibt keine partiellen Abhängigkeiten
+und $D$ ist nicht transitiv abhängig von $A$,
+da auch $C \to A$ gilt.
 
 \end{document}
