@@ -454,5 +454,31 @@ Z.B ist hier der Schlüssel $AB$ minimal, $ABC$ aber nicht.
 }
 \end{center}
 
+Ein Schlüssel ist trivial,
+gdw. er alle Attribute in der Relation beinhaltet.
+Im obigen Beispiel wäre also $ABCD$ der triviale Schlüssel.
+
+Minimale Schlüssel sind von besonderer Bedeutung.
+Daher erhalten sie eine eigenen Namen: \enquote{Schlüsselkandidat},
+im Folgenden kurz SK.
+Diese Bezeichnung halte ich wieder für etwas widersprüchlich,
+da SKs schon Schlüssel sind -
+sie müssen nicht dafür kandidieren.
+
+Es ist daher hilfreich, sich klar zu machen,
+dass \enquote{Schlüsselkandidat} wiederrum kurz
+für \enquote{Primärschlüsselkandidat} ist.
+Ein \enquote{Primärschlüssel},
+im Folgenden kurz PK für \emph{primary key},
+ist ein von uns ausgewählter SK.
+
+Hier nochmal die Hierarchie in einer Liste:
+\begin{enumerate}
+    \item Normale Attributmenge
+    \item Schlüssel: Attributmenge mit maximaler Hülle
+    \item SK: minimaler Schlüssel ($\subseteq$)
+    \item PK: Speziell ausgewählter SK
+\end{enumerate}
+
 
 \end{document}
