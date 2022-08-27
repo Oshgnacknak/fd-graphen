@@ -87,4 +87,26 @@ $$
     A_i \to B_i \to C_i
 $$
 
+\subsection*{Teilmengen}
+Reflexivität ist nur ein Sonderfall hier von,
+aber ich wollte es explizit erwähnen.
+Die Idee ist, wenn wir die Werte $A_i$ festlegen,
+und dann eine Teilmenge $B \subseteq A$ davon auswählen.
+Bleiben die Werte gleich.
+$$
+    A_i \to B_i
+$$
+
+Das erlaubt uns insbesondere,
+FDs aufzuteilen, sodass die rechte Seite
+immer nur genau ein Element hat.
+Anstatt $ABC \to DEF$ können wir also
+$$
+    ABC \to D,\;
+    ABC \to E,\;
+    ABC \to F
+$$
+schreiben, solange wir alle drei FDs hinschreiben.
+Das ist auch wichtig, denn eine Kante
+in einem Graph hat immer genau einen Zielknoten.  
 \end{document}
