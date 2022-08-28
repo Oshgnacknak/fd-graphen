@@ -3,6 +3,8 @@
 % TODO: Replace Ai with { A0, ..., An } thoughout
 % TODO: Write out all Sets, ABC -> { A, B, C }
 % TODO: Try out clockwise placement
+% TODO: Add clickable references
+% TODO: Don't apriviade
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -666,7 +668,7 @@ da auch $C \to A$ gilt.
 Wir wollen uns nun anschauen,
 wie man die jede FD Menge in die 3. Normalform bringen kann.
 
-\subsection*{Löschen partieller Abhängigkeiten}
+\subsection*{Löschen überflüssiger Kanten}
 
 Gegeben sei folgender Graph,
 den wir normalisieren sollen:
@@ -674,7 +676,8 @@ den wir normalisieren sollen:
 \tikz\graph[clockwise=7, radius=2cm]{
     {"$A$", "$AB$", "$B$", "$C$", "$D$", "$E$", "$F$"};
     "$AB$" -> {"$A$", "$B$", "$E$", "$C$", "$F$"};
-    "$AB$" -> "$F$";
+    "$A$" -> "$F$";
+    "$AB$" -> {"$F$", "$D$"};
     "$E$" -> "$D$";
 };
 \end{center}
@@ -682,9 +685,11 @@ Die 2. Normalform ist nicht erfüllt,
 da $F$ partiell von $AB$ abhängt.
 Man könnte das auch wie folgt auffassen:
 Die Kante $AB \to F$ tragt
-nur zur Hülle von $AB$ bei und ist damit überflüssig.
+nichts zur Hülle von $AB$ bei und ist damit überflüssig.
+Genau so ist die Kante $AB \to D$
+nicht von Bedeutung.
 
-Wir entfernen die Kante und die 2.
+Wir entfernen die Kanten und die 2.
 Normalform ist erfüllt:
 \begin{center}
 \tikz\graph[clockwise=7, radius=2cm]{
@@ -749,7 +754,7 @@ und sich damit die Attributmenge nicht ändert.
     "$D$" <- "$C$" <- "$A$" -> "$B$" -> "$E$";
 };
 \end{center}
-Man könnte sagen, der Knoten $A$ hat den Knoten $AB$ verschlugt.
+Man könnte sagen, der Knoten $A$ hat den Knoten $AB$ verschluckt.
 Wir haben die 2. Normalform hergestellt.
 
 Nun zum eigentlichen Thema:
@@ -777,5 +782,189 @@ in einer anderen Tabelle sind.
 Wir haben also aus der einen Relation $ABCDE$
 die drei Relationen $C'D$, $ABC$ und $B'E$ gemacht,
 sodass jede Tabelle die 3. Normalform erfüllt.
+
+\subsection*{Der Synthesealgorithmus}
+Wir haben uns jetzt schon abgeschaut,
+wie man intuitiv eine Relation normalisieren kann.
+Der Synthesealgorithmus soll uns dabei helfen,
+einige Sonderfälle zu beachten.
+
+Man beachte, dass der Synthesealgorithmus nicht
+für Graphen entworfen wurde,
+sondern direkt auf den FDs arbeitet.
+Wir haben daher einige Schritte zusammengefasst,
+während wir andere weiter unterteilt haben.
+
+Hier also die Schritte des Synthesealgorithmus:
+\begin{enumerate}
+\item Linksreduktion:
+    Ziel ist, die linke Seite einer FD
+    zu vereinfachen.
+    Z.B. wird aus
+    $$
+        AC \to B,\;
+        A \to D,\;
+        D \to BC
+    $$
+    indem man das $C$ auf der linken Seite streicht
+    $$
+        A \to B,\;
+        A \to D,\;
+        D \to BC,\;
+    $$
+    Das ist genau das \enquote{Verschlucken},
+    von dem ich zuvor geredet habe. Aus
+    \begin{center}
+    \tikz\graph[clockwise=5, radius=1cm]{
+        {"$A$", "$AC$", "$C$", "$B$", "$D$"};
+        "$AC$" -> {"$A$", "$B$", "$C$"};
+        "$A$" -> "$D$";
+        "$D$" -> {"$B$", "$C$"};
+    };
+    \end{center}
+    wurde also
+    \begin{center}
+    \tikz\graph[clockwise=4, radius=1cm]{
+        {"$A$", "$B$", "$C$", "$D$"};
+        "$A$" -> {"$D$", "$B$"};
+        "$D$" -> {"$B$", "$C$"};
+    };
+    \end{center}
+
+\item Rechtsreduktion:
+    Hier soll die rechte Seite minimiert werden.
+    Ist z.B.
+    $$
+        A \to BC,\;
+        B \to D,\;
+        D \to C
+    $$
+    gegeben, kann das $C$ in der
+    ersten FD weggelassen werden.
+    $$
+        A \to B,\;
+        B \to D,\;
+        D \to C
+    $$
+    Dieser Schritt ist analog zum
+    entfernen der überflüssigen Kanten. Aus
+    \begin{center}
+    \tikz\graph[clockwise=4, radius=1cm]{
+        {"$A$", "$B$", "$D$", "$C$"};
+        "$A$" -> {"$B$", "$C$"};
+        "$B$" -> "$D$";
+        "$D$" -> "$C$";
+    };
+    \end{center}
+    wurde hierbei
+    \begin{center}
+    \tikz\graph{
+        "$A$" -> "$B$" -> "$D$" -> "$C$";
+    };
+    \end{center}
+
+\item Entfernen von $A_i \to \emptyset$:
+    Dieser Schritt entfällt,
+    da wir es in unseren Graphen sowieso machen.
+
+\item Zusammenfassung von FDs mit gleichen linken Seiten:
+    Dieser Schritt entfällt auch.
+    In unseren Graphen gibt es nur eine linke Seite.
+
+\item Falls nötig, hinzufügen eines Schlüsselknoten:
+    Gehen wir davon aus,
+    dass wir durch die vorherigen Schritte
+    diesen Graphen erhalten haben:
+    \begin{center}
+    \tikz\graph[clockwise=5, radius=1cm]{
+        {"$A$", "$E$" -> "$G$", "$B$" -> "$D$", "$C$", "$F$"};
+        "$A$" -> {"$C$", "$E$"};
+        "$B$" -> {"$D$", "$E$"};
+        "$C$" -> "$F$";
+        "$E$" -> "$G$";
+        "$F$" -> "$A$";
+    };
+    \end{center}
+    Problem ist, dass es keinen Knoten gibt,
+    der als PK dienen kann.\
+
+    Wir müssen also einen neuen Knoten hinzufügen,
+    der unser PK sein wird.
+    Ein SK ist $BC$, wir nehmen in.
+    \begin{center}
+    \tikz\graph[clockwise=6, radius=1cm]{
+        {"$A$", "$E$" -> "$G$", "$B$" -> "$D$", "$BC$", "$C$", "$F$"};
+        "$A$" -> {"$C$", "$E$"};
+        "$B$" -> {"$D$", "$E$"};
+        "$C$" -> "$F$";
+        "$E$" -> "$G$";
+        "$F$" -> "$A$";
+        "$BC$" -> {"$B$", "$C$"};
+    };
+    \end{center}
+    Ist vor diesem Schritt immer noch ein SK im Graph enthalten,
+    können wir diesen Schritt ganz überspringen.
+
+\item Fasse zyklische Knoten zusammen:
+    Nehmen wir uns diesen Graph noch mal vor
+    \begin{center}
+    \tikz\graph[clockwise=6, radius=1cm]{
+        {"$A$", "$E$" -> "$G$", "$B$" -> "$D$", "$BC$", "$C$", "$F$"};
+        "$A$" -> {"$C$", "$E$"};
+        "$B$" -> {"$D$", "$E$"};
+        "$C$" -> "$F$";
+        "$E$" -> "$G$";
+        "$F$" -> "$A$";
+        "$BC$" -> {"$B$", "$C$"};
+    };
+    \end{center}
+    Was uns ins Auge fallen sollte,
+    ist der Zyklus $ACF$.\
+
+    Transitivität gibt uns,
+    dass z.B. nicht nur durch $A$
+    die Werte von $C$ bestimmt sind,
+    sondern auch durch $C$ die Werte von $A$.
+    Damit können Werte von $A$ und $C$ immer
+    nur in paaren auftauchen. \
+    
+    Ähnliche Argumente gelten für $AF$ und $CF$.
+    Wir können diese drei Knoten damit
+    als einen Großen betrachten.
+    \begin{center}
+    \tikz\graph[clockwise=5, radius=1cm]{
+        {"$ACF$", "$E$" -> "$G$", "$B$", "$D$", "$BC$"};
+        "$ACF$" -> "$E$";
+        "$B$" -> {"$D$", "$E$"};
+        "$E$" -> "$G$";
+        "$BC$" -> {"$B$", "$ACF$"};
+    };
+    \end{center}
+    Dieser Schritt ist äquivalent zum Schritt
+    \enquote{Fasse Relationen zusammen} des Synthesealgorithmus.
+
+\item Erzeuge eine Relation pro FD:
+    Das ist der letzte Schritt fürs Aufteilen transitiver Abhängigkeiten gewesen.
+    Jeder Knoten, der ausgehende Kanten hat,
+    bekommst eine FD mit seinen direkten Nachbarn. 
+    Aus dem Graphen
+    \begin{center}
+    \tikz\graph{
+        "$A$" <- "$B$" -> "$C$" -> "$D$";
+    };
+    \end{center}
+    erhalten wir beispielsweise die FDs
+    $$
+        B \to AC,\;
+        C' \to D
+    $$
+    Jede FD gibt uns dann genau eine Relation.
+    Wir erhalten also die zwei Relationen
+    $$
+        ABC,\; C'D
+    $$
+    Wieder ist $C'$ als Kopie von $C$ zu verstehen.
+    Die hier entstehenden Relationen sind in der 3. Normalform.
+\end{enumerate}
 
 \end{document}
