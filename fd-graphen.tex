@@ -2,7 +2,7 @@
 
 % TODO: Replace Ai with { A0, ..., An } thoughout
 % TODO: Write out all Sets, ABC -> { A, B, C }
-% TODO: Try out https://tikz.dev/tikz-graphs#tikz/graphs/circular:placement
+% TODO: Try out clockwise placement
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -254,7 +254,7 @@ von großer Bedeutung.
 Die Attributhülle von eine
 gegebenen Attributmenge $A_i$
 ist die Menge aller Attibute, 
-die funktionell von $A_i$ abhängig.
+die funktionell von $A_i$ abhängen.
 Wir schreiben $A_i^+$ für die Attributhülle von $A_i$.
 
 Wie wir sehen werden,
@@ -661,5 +661,121 @@ Und nun FDs in 3. Normalform:
 Es gibt keine partiellen Abhängigkeiten
 und $D$ ist nicht transitiv abhängig von $A$,
 da auch $C \to A$ gilt.
+
+\section*{Normalisieren}
+Wir wollen uns nun anschauen,
+wie man die jede FD Menge in die 3. Normalform bringen kann.
+
+\subsection*{Löschen partieller Abhängigkeiten}
+
+Gegeben sei folgender Graph,
+den wir normalisieren sollen:
+\begin{center}
+\tikz\graph[clockwise=7, radius=2cm]{
+    {"$A$", "$AB$", "$B$", "$C$", "$D$", "$E$", "$F$"};
+    "$AB$" -> {"$A$", "$B$", "$E$", "$C$", "$F$"};
+    "$AB$" -> "$F$";
+    "$E$" -> "$D$";
+};
+\end{center}
+Die 2. Normalform ist nicht erfüllt,
+da $F$ partiell von $AB$ abhängt.
+Man könnte das auch wie folgt auffassen:
+Die Kante $AB \to F$ tragt
+nur zur Hülle von $AB$ bei und ist damit überflüssig.
+
+Wir entfernen die Kante und die 2.
+Normalform ist erfüllt:
+\begin{center}
+\tikz\graph[clockwise=7, radius=2cm]{
+    {"$A$", "$AB$", "$B$", "$C$", "$D$", "$E$", "$F$"};
+    "$AB$" -> {"$A$", "$B$", "$E$", "$C$"};
+    "$A$" -> "$F$";
+    "$E$" -> "$D$";
+};
+\end{center}
+
+\subsection*{Aufteilen transitiver Abhängigkeiten}
+
+Hier noch ein Beispiel:
+\begin{center}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$A$", "$B$" -> "$E$", "$AB$", "$C$" -> "$D$", "$D$", "$E$"};
+    "$AB$" -> {"$A$", "$B$", "$C$"};
+    "$A$" -> "$B$";
+};
+\end{center}
+$B$ ist sowohl direkt, als auch partiell von $AB$ abhängig.
+Wir löschen also die direkte Kante:
+\begin{center}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$A$", "$B$" -> "$E$", "$AB$", "$C$" -> "$D$", "$D$", "$E$"};
+    "$AB$" -> {"$A$", "$C$"};
+    "$A$" -> "$B$";
+};
+\end{center}
+Wir überlegen uns die Hülle von $A$.
+Offensichtlich gilt $AB \subseteq A^+$
+und über $AB$ und $B$ dann auch $A^+ = ABCDE$.
+Wir wollen die fehleden Kanten
+von $A$ nach $C$ und $AB$ temporär einzeichnen.
+\begin{center}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$A$", "$B$" -> "$E$", "$AB$", "$C$" -> "$D$", "$D$", "$E$"};
+    "$AB$" -> {"$A$", "$C$"};
+    "$A$" -> {"$B$", "$C$"};
+    "$A$" ->[bend left] "$AB$";
+};
+\end{center}
+Wir haben damit aber zugleich eine partiell
+und eine transitive Abhängigkeiten erzeugt.
+Beides beheben wir, indem wir die Kante $AB \to C$ verbannen: 
+\begin{center}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$A$", "$B$" -> "$E$", "$AB$", "$C$" -> "$D$", "$D$", "$E$"};
+    "$AB$" -> "$A$";
+    "$A$" -> {"$B$", "$C$"};
+    "$A$" ->[bend left] "$AB$";
+};
+\end{center}
+Man beachte, dass sich die Hülle jedes Knoten
+in den obigen Schritten nicht geändert hat.
+
+Der Knoten $AB$ ist überflüssig geworden und kann entfernt werden.
+Dies ist erlaubt, da er zusammengesetzt ist
+und sich damit die Attributmenge nicht ändert. 
+\begin{center}
+\tikz\graph{
+    "$D$" <- "$C$" <- "$A$" -> "$B$" -> "$E$";
+};
+\end{center}
+Man könnte sagen, der Knoten $A$ hat den Knoten $AB$ verschlugt.
+Wir haben die 2. Normalform hergestellt.
+
+Nun zum eigentlichen Thema:
+Wir wollen die transitiven Abhängigkeiten los werden.
+Wie können wir da vor gehen?
+Jede Kante ist essentiell und
+weitere Kanten machen es nur wieder schlechter.
+
+Der Trick ist, das wir hier zum
+erstem mal unseren Graphen aufteilen.
+Und zwar nicht nur den:
+Tatsächlich können wir jetzt ablesen,
+in welche Tabellen wir unsere ursprüngliche Relation
+aufteilen müssen, sodass jede dieser die 3. Normalform erfüllt.
+Wir teilen immer bei den transitiven Abhängigkeiten auf:
+\begin{center}
+\tikz\graph{
+    "$C'$" -> "$D$";
+    "$C$" <- "$A$" -> "$B$";
+    "$B'$" -> "$E$";
+};
+\end{center}
+Gemeint ist, dass die Attribute $B'$ und $C'$ jeweils Kopien 
+in einer anderen Tabelle sind.
+Wir haben also aus der einen Relation $ABCDE$
+die drei Relationen $C'D$, $ABC$ und $B'E$ gemacht,
+sodass jede Tabelle die 3. Normalform erfüllt.
 
 \end{document}
