@@ -1,8 +1,5 @@
 \documentclass[a4paper, ngerman]{article}
 
-% TODO: Replace Ai with { A0, ..., An } thoughout
-% TODO: Write out all Sets, ABC -> { A, B, C }
-
 \usepackage{babel}
 \usepackage{csquotes}
 \usepackage{amsmath}
@@ -31,14 +28,22 @@ Wir wollen uns in diesem Dokument damit befassen,
 wie man funktionale Abhängigkeiten durch Graphen ausdrücken
 und mit ihnen arbeiten kann.
 
+Bevor wir beginnen noch
+ein Wort zur Mengennotation:
+Würde wir Mengen, wie sonst üblich schrieben,
+kann es bei den Graphen echt unübersichtlich werden.
+Daher wollen wir die Menge $\{ A_0, \dots, A_n \}$
+als Zeichenkette abkürzen: $A_0 \dots A_n$.
+Wenn wir die gesamte Menge meinen, 
+schreiben wir auch $A_i$.
+
 \section*{Funktionale Abhängigkeiten}
 Eine funktionale Abhängigkeit
 ist eine Relation zwischen zwei Attributmengen.
 Nämlich die \enquote{folgt aus} Beziehung:
 Wir schreiben
 $$
-    A_0, \dots, A_n \to 
-    B_0, \dots, B_m
+    A_i \to B_i
 $$
 wenn in einer Tabelle (Relation) alle Zeilen (Tupel),
 die in den Spalten (Attributen) $A_i$ übereinstimmen,
