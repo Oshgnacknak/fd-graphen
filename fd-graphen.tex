@@ -3,8 +3,6 @@
 % TODO: Replace Ai with { A0, ..., An } thoughout
 % TODO: Write out all Sets, ABC -> { A, B, C }
 % TODO: Try out clockwise placement
-% TODO: Add clickable references
-% TODO: Don't apriviade (SK, PK)
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -472,36 +470,34 @@ gdw. er alle Attribute in der Relation beinhaltet.
 Im obigen Beispiel wäre also $ABCD$ der triviale Schlüssel.
 
 Minimale Schlüssel sind von besonderer Bedeutung.
-Daher erhalten sie eine eigenen Namen: \enquote{Schlüsselkandidat},
-im Folgenden kurz SK.
+Daher erhalten sie eine eigenen Namen: \enquote{Schlüsselkandidat}.
 Diese Bezeichnung halte ich wieder für etwas widersprüchlich,
-da SKs schon Schlüssel sind -
+da Schlüsselkandidaten schon Schlüssel sind -
 sie müssen nicht dafür kandidieren.
 
 Es ist daher hilfreich, sich klar zu machen,
 dass \enquote{Schlüsselkandidat} wiederrum kurz
 für \enquote{Primärschlüsselkandidat} ist.
 Ein \enquote{Primärschlüssel},
-im Folgenden kurz PK für \emph{primary key},
-ist ein von uns ausgewählter SK.
+ist ein von uns ausgewählter Schlüsselkandidat.
 
 Hier nochmal die Hierarchie in einer Liste:
 \begin{enumerate}
     \item Normale Attributmenge
     \item Schlüssel: Attributmenge mit maximaler Hülle
-    \item SK: minimaler Schlüssel ($\subseteq$)
-    \item PK: Speziell ausgewählter SK
+    \item Schlüsselkandidat: minimaler Schlüssel ($\subseteq$)
+    \item Primärschlüssel: Speziell ausgewählter Schlüsselkandidat
 \end{enumerate}
 
 Jedes Attribut,
-das Teil eines beliebigen SK ist,
+das Teil eines beliebigen Schlüsselkandidaten ist,
 nennen wir \enquote{Primattribut}.
 Alle anderen nennen wir dementsprechend
 \enquote{Nichtprimattribute}.
 
 \section*{Bestimmen der Schlüsselkandidaten}
 Wir wollen uns an folgenden Beispiel anschauen,
-wie man SKs aus dem Graphen zu eine
+wie man Schlüsselkandidaten aus dem Graphen zu eine
 funktionale Abhängigkeitsmenge auslesen kann.
 Gegeben also die funktionalen Abhängigkeiten:
 $$
@@ -549,10 +545,10 @@ sollte uns zwei Dinge beim betrachten des Graphen auffallen:
 \begin{enumerate}
     \item Der Knoten $B$ kann von keinem
         anderen Knoten aus erreicht werden.
-        Damit muss er Teil jedes SKs sein.
+        Damit muss er Teil jedes Schlüsselkandidaten sein.
     \item Die Knoten $D$ und $G$ haben
         keine ausgehenden Kanten.
-        Sie sind für die SKs uninteressant.
+        Sie sind für die Schlüsselkandidaten uninteressant.
 \end{enumerate}
 Wir wollen die Hülle aller noch relevanten Knoten berechnen:
 \begin{align*}
@@ -566,7 +562,7 @@ $A$, $C$ und $F$ haben die gleiche Hülle
 und sind damit austauschbar.
 Wir nehmen $B$ hinzu und haben
 jeweils alles abgedeckt.
-Es ergeben sich die SKs:
+Es ergeben sich die Schlüsselkandidaten:
 $$
     AB, CB, FB
 $$
@@ -624,7 +620,7 @@ und ist damit nur partiell von $AB$ abhängig.
 \emph{Eine Relation ist in 3. Normalform,
     wenn sie in 2. Normalform ist
     und alle Nichtprimattribute nicht transitiv
-    von einem SK abhängen.}
+    von einem Schlüsselkandidat abhängen.}
 
 Den Begriff der transitiven Abhängigkeit
 haben wird grundsätzlich schon oben kennen gelernt.
@@ -909,11 +905,11 @@ Hier also die Schritte des Synthesealgorithmus:
     };
     \end{center}
     Problem ist, dass es keinen Knoten gibt,
-    der als PK dienen kann.\
+    der als Primärschlüssel dienen kann.\
 
     Wir müssen also einen neuen Knoten hinzufügen,
-    der unser PK sein wird.
-    Ein SK ist $BC$, wir nehmen in.
+    der unser Primärschlüssel sein wird.
+    Ein möglicher Schlüsselkandidat ist $BC$, wir nehmen in.
     \begin{center}
     \tikz\graph[clockwise=6, radius=1cm]{
         {"$A$", "$E$" -> "$G$", "$B$" -> "$D$", "$BC$", "$C$", "$F$"};
@@ -925,7 +921,8 @@ Hier also die Schritte des Synthesealgorithmus:
         "$BC$" -> {"$B$", "$C$"};
     };
     \end{center}
-    Ist vor diesem Schritt immer noch ein SK im Graph enthalten,
+    Ist vor diesem Schritt immer noch
+    ein Schlüsselkandidat im Graph enthalten,
     können wir diesen Schritt ganz überspringen.
 
 \item Fasse zyklische Knoten zusammen:
