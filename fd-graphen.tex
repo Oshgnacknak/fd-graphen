@@ -5,6 +5,7 @@
 % TODO: Try out clockwise placement
 % TODO: Add clickable references
 % TODO: Don't apriviade
+% TODO: Funktionelle -> Funktionale
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -28,15 +29,14 @@ Damit Datenbanksysteme Optimal arbeiten können,
 müssen die in ihnen eingetragenen Daten
 gewisse Eigenschaften erfüllen.
 Für die Analyse dieser Eigenschaften
-Sind funktionelle Abhängigkeiten essentiell.
+sind funktionelle Abhängigkeiten essentiell.
 
-Wir wollen uns im weiteren Verlauf dieses Dokuments damit befassen,
+Wir wollen uns in diesem Dokument damit befassen,
 wie man funktionelle Abhängigkeiten durch Graphen ausdrücken
 und mit ihnen arbeiten kann.
 
 \section*{Funktionelle Abhängigkeiten}
 Eine funktionelle Abhängigkeit
-(im Folgenden nur noch \enquote{FD}, für \emph{functional dependency})
 ist eine Relation zwischen zwei Attributmengen.
 Nämlich die \enquote{folgt aus} Beziehung:
 Wir schreiben
@@ -45,10 +45,10 @@ $$
     B_0, \dots, B_m
 $$
 wenn in einer Tabelle (Relation) alle Zeilen (Tupel),
-die in den Spalten (Attributen) $A_i$ übereinstimmen
+die in den Spalten (Attributen) $A_i$ übereinstimmen,
 auch in den Spalten $B_i$ übereinstimmen.
 
-Als Beispiel soll folgende Tabelle dienen:
+Als Beispiel soll diese Tabelle dienen:
 \begin{center}
 \begin{tabular}{ c | c | c }
     Straße & PLZ & Ort \\
@@ -60,12 +60,12 @@ Als Beispiel soll folgende Tabelle dienen:
     Heinertstraße & 56283 & Beulich \\
 \end{tabular}
 \end{center}
-Kennt man die PLZ, ist auch der Ort eindeutig
+Kennt man die PLZ, ist auch der Ort eindeutig.
 $$
     \text{PLZ} \to \text{Ort}
 $$
 Kennt man wiederrum den Ort und die Straße,
-kann man auf die PLZ zurück schließen
+kann man auf die PLZ zurück schließen.
 $$
     \text{Straße}, \text{Ort} \to \text{PLZ}
 $$
@@ -74,12 +74,13 @@ $$
 Um uns klar zu machen,
 warum gerade Graphen eine gute Darstellung für
 funktionelle Abhängigkeiten sind,
-wollen wir ein paar Überlegungen zu FDs machen.
+wollen wir ein paar Eigenschaften zu
+funktioneller Abhängigkeit herleiten.
 
 \subsection*{Reflexivität}
 Eine Relation ist reflexiv,
-wenn jeder Wert mit sich selbst in einer Beziehung steht.
-Das ist bei FDs natürlich der Fall,
+wenn jedes Element mit sich selbst in einer Beziehung steht.
+Das ist bei funktionellen Abhängigkeiten natürlich der Fall,
 denn wenn die Spalten $A_i$ festgelegt wurden,
 sind insbesondere die Werte $A_i$ bestimmt.
 $$
@@ -88,17 +89,17 @@ $$
 
 \subsection*{Transitivität}
 Eine Relation ist transitiv,
-wenn sich die Relation zwischen mehreren Werten überträgt.
+wenn sich die Relation zwischen mehreren Elementen überträgt.
 Also wenn aus $A_i \to B_i$ und $B_i \to C_i$ schon $A_i \to C_i$ folgt.
 
-Für FDs ist auch dies keine schwere Überlegung,
+Für funktionelle Abhängigkeiten ist auch dies keine schwere Überlegung,
 denn wenn die Werte $A_i$ feststehen,
 folgen daraus die Werte für $B_i$,
 wonach wir aber auch eindeutige Werte für $C_i$ bekommen.
 
 Es ist uns somit erlaubt,
 \enquote{$\to$} zu verketten,
-was wir für Graphen unbedingt brauchen
+was wir für Graphen unbedingt brauchen.
 $$
     A_i \to B_i \to C_i
 $$
@@ -107,40 +108,43 @@ $$
 Reflexivität ist nur ein Sonderfall hier von,
 aber ich wollte es explizit erwähnen.
 Die Idee ist, wenn wir die Werte $A_i$ festlegen,
-und dann eine Teilmenge $B \subseteq A$ davon auswählen.
-Bleiben die Werte gleich.
+und dann eine Teilmenge $B \subseteq A$ davon auswählen,
+bleiben die Werte gleich.
 $$
     A_i \to B_i
 $$
 
 Das erlaubt uns insbesondere,
-FDs aufzuteilen, sodass die rechte Seite
-immer nur genau ein Element hat.
+funktionelle Abhängigkeiten aufzuteilen,
+sodass die rechte Seite
+immer nur genau ein Attribut hat.
 Anstatt $ABC \to DEF$ können wir also
 $$
     ABC \to D,\;
     ABC \to E,\;
     ABC \to F
 $$
-schreiben, solange wir alle drei FDs hinschreiben.
+schreiben, solange wir alle drei
+funktionellen Abhängigkeiten hinschreiben.
 Das ist auch wichtig, denn eine Kante
-in einem Graph hat immer genau einen Zielknoten.
+in einem Graphen hat immer genau einen Zielknoten.
 
 \section*{Funktionelle Abhängigkeiten als Graphen}
-Zur einer gegebenen Menge an FDs können
+Zur einer gegebenen Menge an funktionellen
+Abhängigkeiten können
 wir uns nun endlich überlegen,
 wie deren Graph aus zu stehen hat.
 
 Zunächst bekommt jede Attributmenge
 auf der Linken Seite einen Knoten,
 der mit der Menge selbst beschriftet ist.
-Sind z.B. die FDs
+Sind z.B. die funktionellen Abhängigkeiten
 $$
     AB \to C,\;
     CD \to E,\;
     EF \to AGH
 $$
-gegeben, brauchen die Knoten $AB$, $CD$ und $EF$.
+gegeben, brauchen wir die Knoten $AB$, $CD$ und $EF$.
 \begin{center}
     \tikz{
         % \node[] (a) at (0,0) {$A$};
@@ -175,7 +179,8 @@ gegeben, brauchen die Knoten $AB$, $CD$ und $EF$.
 Für die rechten Seiten bekommt
 jedes Attribute seinen eigenen Knoten.
 Hier also $C$, $E$, $A$, $G$, und $H$.
-Die Kanten ergeben sich eben aus den FDs.
+Die Kanten ergeben sich eben aus
+den funktionellen Abhängigkeiten.
 \begin{center}
     \tikz{
         \node[] (a) at (0,0) {$A$};
@@ -251,7 +256,8 @@ auch wichtig und wir wollen sie auch gleich einzeichnen.
 \end{center}
 
 \subsection*{Erreichbarkeit und die Hülle}
-Bei FDs ist der Begriff der Attributhülle 
+Bei funktionellen Abhängigkeiten ist
+der Begriff der Attributhülle 
 von großer Bedeutung.
 Die Attributhülle von eine
 gegebenen Attributmenge $A_i$
@@ -261,14 +267,15 @@ Wir schreiben $A_i^+$ für die Attributhülle von $A_i$.
 
 Wie wir sehen werden,
 sind das alle Knoten in unserem Graphen,
-die von $A_i^+$ aus erreichbar sind,
+die von $A_i$ aus erreichbar sind,
 denn auch bei dieser Fragestellung
-gilt Reflexivität und Transitivität.
+gilt Transitivität und die Teilmengeneigenschaft.
 
 Wir können uns somit für die Berechnung der Hülle
 vollständig auf den Graphen konzentrieren.
 
-Nehmen wir als Beispiel die FDs
+Nehmen wir als Beispiel
+die funktionellen Abhängigkeiten.
 $$
     A  \to B,\;
     AB \to C,\;
@@ -329,7 +336,8 @@ Wir können die Berechnung also mit $A$ fortsetzen.
 $$
     EF^+ = EF^+ \cup A^+
 $$
-Hier kommt die Transitivität von FDs zu trage.
+Hier kommt die Transitivität
+von funktionellen Abhängigkeiten zu trage.
 
 Durch $A^+$ kommt sogleich der Knoten $B$ hinzu.
 $$
@@ -340,24 +348,24 @@ $$
     ABEFGH \subseteq EF^+
 $$
 Das gibt uns, dass wenn $EF$ bestimmt ist,
-auch $AB$ bestimmt fest steht.
+auch steht $AB$ fest.
 Auch wenn hierzu noch keine Kante eingezeichnet ist,
 haben wir dennoch gezeigt, dass es diese gibt
 und wir können mit $AB^+$ weiter machen.
 $$
     EF^+ = EF^+ \cup A^+ \cup AB^+
 $$
-Es kommst aber nur noch $C$ dazu.
-Wir habe die Hülle bestimmt.
+Es kommst aber nur noch $C$ dazu
+und wir habe die Hülle bestimmt.
 $$
     EF^+ = ABCEFGH
 $$
 
 \section*{Die tatsächliche Größe des Graphen}
-Wie gerade gesehen haben wir nicht alle Kanten angegeben.
+Wie gerade gesehen, haben wir nicht alle Kanten angegeben.
 Tatsächlich haben wir auch nicht alle Knoten hingemalt,
-z.B. der Knoten $ACE$ fehlt.
-Wir müssten auch Folgendes in unserem Graphen haben.
+denn z.B. der Knoten $ACE$ fehlt.
+Wir müssten auch Folgendes in unserem Graphen beifügen.
 \begin{center}
 \tikz{
     \node[] (ace) at (0,0)   {$ACE$};
@@ -396,14 +404,14 @@ ein Großteil dieser Informationen.
 
 Das ist aber nicht zu unserem Nachteil,
 denn wenn wir später Normalisieren wollen,
-werden wir feststellen,
+werden wir beim Normalisieren feststellen,
 dass wir tatsächlich noch mehr Knoten
-und kanten aus unseren Graphen verbannen wollen.
+und Kanten aus unseren Graphen verbannen wollen.
 
 Man mache sich klar, dass es zu einer 
 gegebenen Attributsmenge mindestens
 $2^n$ Knoten geben muss.
-Es gibt dann noch weitaus mehr Kanten.
+Es gibt noch weitaus mehr Kanten.
 
 \section*{Schlüssel}
 Keine Datenbank kommt ohne Schlüssel aus.
@@ -491,8 +499,9 @@ Alle anderen nennen wir dementsprechend
 
 \section*{Bestimmen der Schlüsselkandidaten}
 Wir wollen uns an folgenden Beispiel anschauen,
-wie man SKs aus dem Graphen zu eine FD Menge auslesen kann.
-Gegeben also die FDs:
+wie man SKs aus dem Graphen zu eine
+funktionelle Abhängigkeitsmenge auslesen kann.
+Gegeben also die funktionellen Abhängigkeiten:
 $$
     A  \to C,\;
     B  \to DE,\;
@@ -574,10 +583,13 @@ um eine Normalform zu erfüllen.
 \emph{Eine Relation ist in 1. Normalform,
     wenn alle Attributes Atomar sind.}
 
-Damit man überhaupt FDs und dann Schlüssel (daher \enquote{The Key}) bestimmen kann,
+Damit man überhaupt funktionelle Abhängigkeiten
+und dann Schlüssel
+(daher \enquote{The Key}) bestimmen kann,
 darf in einer Spalte immer nur genau ein Wert stehen. 
 
-Da wir uns hauptsächlich mit FDs beschäftigen,
+Da wir uns hauptsächlich mit
+funktionellen Abhängigkeiten beschäftigen,
 gehen wir um weiteren Verlauf davon aus,
 dass alle Relation in 1. Normalform sind.
 
@@ -634,7 +646,8 @@ gilt.
 
 \subsection*{Beispiele}
 
-Die folgenden FDs sind nur in 1. Normalform:
+Die folgenden funktionellen Abhängigkeiten
+sind nur in 1. Normalform:
 \begin{center}
 \tikz\graph{
     "$AC$" -> {"$B$", "$A$"};
@@ -644,7 +657,8 @@ Die folgenden FDs sind nur in 1. Normalform:
 \end{center}
 $B$ ist partiell von $AB$ abhängig.
 
-Hier ist eine FD Menge in 2. Normalform:
+Hier ist eine funktionelle Abhängigkeitsmenge
+in 2. Normalform:
 \begin{center}
 \tikz\graph{
     "$A$" -> {"$B$", "$C$", "$D$" -> "$E$"};
@@ -653,7 +667,7 @@ Hier ist eine FD Menge in 2. Normalform:
 Es gibt keine partiellen Abhängigkeiten,
 aber $E$ ist transitiv von $A$ abhängig.
 
-Und nun FDs in 3. Normalform:
+Und nun funktionelle Abhängigkeiten in 3. Normalform:
 \begin{center}
 \tikz\graph{
     "$A$" -> {"$B$", "$C$" -> "$D$", "$E$"};
@@ -666,7 +680,8 @@ da auch $C \to A$ gilt.
 
 \section*{Normalisieren}
 Wir wollen uns nun anschauen,
-wie man die jede FD Menge in die 3. Normalform bringen kann.
+wie man die jede funktionelle Abhängigkeitsmenge
+in die 3. Normalform bringen kann.
 
 \subsection*{Löschen überflüssiger Kanten}
 
@@ -791,15 +806,16 @@ einige Sonderfälle zu beachten.
 
 Man beachte, dass der Synthesealgorithmus nicht
 für Graphen entworfen wurde,
-sondern direkt auf den FDs arbeitet.
+sondern direkt auf den
+funktionellen Abhängigkeiten arbeitet.
 Wir haben daher einige Schritte zusammengefasst,
 während wir andere weiter unterteilt haben.
 
 Hier also die Schritte des Synthesealgorithmus:
 \begin{enumerate}
 \item Linksreduktion:
-    Ziel ist, die linke Seite einer FD
-    zu vereinfachen.
+    Ziel ist, die linke Seite einer
+    funktionellen Abhängigkeit zu vereinfachen.
     Z.B. wird aus
     $$
         AC \to B,\;
@@ -810,7 +826,7 @@ Hier also die Schritte des Synthesealgorithmus:
     $$
         A \to B,\;
         A \to D,\;
-        D \to BC,\;
+        D \to BC
     $$
     Das ist genau das \enquote{Verschlucken},
     von dem ich zuvor geredet habe. Aus
@@ -840,14 +856,15 @@ Hier also die Schritte des Synthesealgorithmus:
         D \to C
     $$
     gegeben, kann das $C$ in der
-    ersten FD weggelassen werden.
+    ersten funktionellen Abhängigkeit
+    weggelassen werden.
     $$
         A \to B,\;
         B \to D,\;
         D \to C
     $$
     Dieser Schritt ist analog zum
-    entfernen der überflüssigen Kanten. Aus
+    Entfernen der überflüssigen Kanten. Aus
     \begin{center}
     \tikz\graph[clockwise=4, radius=1cm]{
         {"$A$", "$B$", "$D$", "$C$"};
@@ -867,7 +884,8 @@ Hier also die Schritte des Synthesealgorithmus:
     Dieser Schritt entfällt,
     da wir es in unseren Graphen sowieso machen.
 
-\item Zusammenfassung von FDs mit gleichen linken Seiten:
+\item Zusammenfassung von funktionellen Abhängigkeiten
+    mit gleichen linken Seiten:
     Dieser Schritt entfällt auch.
     In unseren Graphen gibt es nur eine linke Seite.
 
@@ -943,22 +961,24 @@ Hier also die Schritte des Synthesealgorithmus:
     Dieser Schritt ist äquivalent zum Schritt
     \enquote{Fasse Relationen zusammen} des Synthesealgorithmus.
 
-\item Erzeuge eine Relation pro FD:
+\item Erzeuge eine Relation pro funktionellen Abhängigkeit.
     Das ist der letzte Schritt fürs Aufteilen transitiver Abhängigkeiten gewesen.
     Jeder Knoten, der ausgehende Kanten hat,
-    bekommst eine FD mit seinen direkten Nachbarn. 
+    bekommst eine funktionellen Abhängigkeit
+    mit seinen direkten Nachbarn. 
     Aus dem Graphen
     \begin{center}
     \tikz\graph{
         "$A$" <- "$B$" -> "$C$" -> "$D$";
     };
     \end{center}
-    erhalten wir beispielsweise die FDs
+    erhalten wir beispielsweise
+    die funktionellen Abhängigkeiten
     $$
         B \to AC,\;
         C' \to D
     $$
-    Jede FD gibt uns dann genau eine Relation.
+    Jede funktionelle Abhängigkeit gibt uns dann genau eine Relation.
     Wir erhalten also die zwei Relationen
     $$
         ABC,\; C'D
