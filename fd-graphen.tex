@@ -4,8 +4,7 @@
 % TODO: Write out all Sets, ABC -> { A, B, C }
 % TODO: Try out clockwise placement
 % TODO: Add clickable references
-% TODO: Don't apriviade
-% TODO: Funktionelle -> Funktionale
+% TODO: Don't apriviade (SK, PK)
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -14,7 +13,7 @@
 
 \usetikzlibrary{graphs}
 
-\title{Funktionelle Abhängigkeit und Graphen}
+\title{Funktionale Abhängigkeit und Graphen}
 \author{Oshgnacknak}
 \date{\today}
 
@@ -29,14 +28,14 @@ Damit Datenbanksysteme Optimal arbeiten können,
 müssen die in ihnen eingetragenen Daten
 gewisse Eigenschaften erfüllen.
 Für die Analyse dieser Eigenschaften
-sind funktionelle Abhängigkeiten essentiell.
+sind funktionale Abhängigkeiten essentiell.
 
 Wir wollen uns in diesem Dokument damit befassen,
-wie man funktionelle Abhängigkeiten durch Graphen ausdrücken
+wie man funktionale Abhängigkeiten durch Graphen ausdrücken
 und mit ihnen arbeiten kann.
 
-\section*{Funktionelle Abhängigkeiten}
-Eine funktionelle Abhängigkeit
+\section*{Funktionale Abhängigkeiten}
+Eine funktionale Abhängigkeit
 ist eine Relation zwischen zwei Attributmengen.
 Nämlich die \enquote{folgt aus} Beziehung:
 Wir schreiben
@@ -70,17 +69,17 @@ $$
     \text{Straße}, \text{Ort} \to \text{PLZ}
 $$
 
-\section*{Eigenschaften funktioneller Abhängigkeit}
+\section*{Eigenschaften funktionaler Abhängigkeit}
 Um uns klar zu machen,
 warum gerade Graphen eine gute Darstellung für
-funktionelle Abhängigkeiten sind,
+funktionale Abhängigkeiten sind,
 wollen wir ein paar Eigenschaften zu
-funktioneller Abhängigkeit herleiten.
+funktionaler Abhängigkeit herleiten.
 
 \subsection*{Reflexivität}
 Eine Relation ist reflexiv,
 wenn jedes Element mit sich selbst in einer Beziehung steht.
-Das ist bei funktionellen Abhängigkeiten natürlich der Fall,
+Das ist bei funktionalen Abhängigkeiten natürlich der Fall,
 denn wenn die Spalten $A_i$ festgelegt wurden,
 sind insbesondere die Werte $A_i$ bestimmt.
 $$
@@ -92,7 +91,7 @@ Eine Relation ist transitiv,
 wenn sich die Relation zwischen mehreren Elementen überträgt.
 Also wenn aus $A_i \to B_i$ und $B_i \to C_i$ schon $A_i \to C_i$ folgt.
 
-Für funktionelle Abhängigkeiten ist auch dies keine schwere Überlegung,
+Für funktionale Abhängigkeiten ist auch dies keine schwere Überlegung,
 denn wenn die Werte $A_i$ feststehen,
 folgen daraus die Werte für $B_i$,
 wonach wir aber auch eindeutige Werte für $C_i$ bekommen.
@@ -115,7 +114,7 @@ $$
 $$
 
 Das erlaubt uns insbesondere,
-funktionelle Abhängigkeiten aufzuteilen,
+funktionale Abhängigkeiten aufzuteilen,
 sodass die rechte Seite
 immer nur genau ein Attribut hat.
 Anstatt $ABC \to DEF$ können wir also
@@ -125,20 +124,20 @@ $$
     ABC \to F
 $$
 schreiben, solange wir alle drei
-funktionellen Abhängigkeiten hinschreiben.
+funktionalen Abhängigkeiten hinschreiben.
 Das ist auch wichtig, denn eine Kante
 in einem Graphen hat immer genau einen Zielknoten.
 
-\section*{Funktionelle Abhängigkeiten als Graphen}
-Zur einer gegebenen Menge an funktionellen
+\section*{Funktionale Abhängigkeiten als Graphen}
+Zur einer gegebenen Menge an funktionalen
 Abhängigkeiten können
 wir uns nun endlich überlegen,
-wie deren Graph aus zu stehen hat.
+wie deren Graph auszusehen hat.
 
 Zunächst bekommt jede Attributmenge
 auf der Linken Seite einen Knoten,
 der mit der Menge selbst beschriftet ist.
-Sind z.B. die funktionellen Abhängigkeiten
+Sind z.B. die funktionalen Abhängigkeiten
 $$
     AB \to C,\;
     CD \to E,\;
@@ -180,7 +179,7 @@ Für die rechten Seiten bekommt
 jedes Attribute seinen eigenen Knoten.
 Hier also $C$, $E$, $A$, $G$, und $H$.
 Die Kanten ergeben sich eben aus
-den funktionellen Abhängigkeiten.
+den funktionalen Abhängigkeiten.
 \begin{center}
     \tikz{
         \node[] (a) at (0,0) {$A$};
@@ -222,7 +221,7 @@ $$
 $$
 
 Diese Kanten sind im späteren Verlauf
-auch wichtig und wir wollen sie auch gleich einzeichnen.
+noch wichtig und wir wollen sie auch gleich einzeichnen.
 \begin{center}
     \tikz{
         \node[] (a)  at (0,0)   {$A$};
@@ -256,13 +255,13 @@ auch wichtig und wir wollen sie auch gleich einzeichnen.
 \end{center}
 
 \subsection*{Erreichbarkeit und die Hülle}
-Bei funktionellen Abhängigkeiten ist
+Bei funktionalen Abhängigkeiten ist
 der Begriff der Attributhülle 
 von großer Bedeutung.
 Die Attributhülle von eine
 gegebenen Attributmenge $A_i$
 ist die Menge aller Attibute, 
-die funktionell von $A_i$ abhängen.
+die funktional von $A_i$ abhängen.
 Wir schreiben $A_i^+$ für die Attributhülle von $A_i$.
 
 Wie wir sehen werden,
@@ -275,7 +274,7 @@ Wir können uns somit für die Berechnung der Hülle
 vollständig auf den Graphen konzentrieren.
 
 Nehmen wir als Beispiel
-die funktionellen Abhängigkeiten.
+die funktionalen Abhängigkeiten.
 $$
     A  \to B,\;
     AB \to C,\;
@@ -337,7 +336,7 @@ $$
     EF^+ = EF^+ \cup A^+
 $$
 Hier kommt die Transitivität
-von funktionellen Abhängigkeiten zu trage.
+von funktionalen Abhängigkeiten zu trage.
 
 Durch $A^+$ kommt sogleich der Knoten $B$ hinzu.
 $$
@@ -365,7 +364,8 @@ $$
 Wie gerade gesehen, haben wir nicht alle Kanten angegeben.
 Tatsächlich haben wir auch nicht alle Knoten hingemalt,
 denn z.B. der Knoten $ACE$ fehlt.
-Wir müssten auch Folgendes in unserem Graphen beifügen.
+Wir müssten auch Folgendes
+in unseren Graphen beifügen.
 \begin{center}
 \tikz{
     \node[] (ace) at (0,0)   {$ACE$};
@@ -398,13 +398,13 @@ Wir müssten auch Folgendes in unserem Graphen beifügen.
     }
 }
 \end{center}
-Das wird aber sehr schnell unübersichtlich
+Das würde aber sehr schnell unübersichtlich
 und deswegen verzichten wir auf
 ein Großteil dieser Informationen.
 
-Das ist aber nicht zu unserem Nachteil,
+Zu unserem Nachteil ist ist dies aber nicht,
 denn wenn wir später Normalisieren wollen,
-werden wir beim Normalisieren feststellen,
+werden wir feststellen,
 dass wir tatsächlich noch mehr Knoten
 und Kanten aus unseren Graphen verbannen wollen.
 
@@ -428,13 +428,13 @@ In unseren Graphen heißt das,
 Schlüssel sind alle Knoten,
 von denen aus der gesamte Graph erreichbar ist.
 
-Manche sagen nennen Schlüssel auch \enquote{Superschlüssel}.
+Manche nennen Schlüssel auch \enquote{Superschlüssel}.
 Ich halte diesen Begriff für missverständlich,
-da dies noch die schwächste Eigenschaft ist.
+da dies noch die allgemeinste Form
+von Schlüsseln sind.
 
 Ein Schlüssel heißt einfach,
 gdw. er nur ein Element hat.
-
 Z.B. ist im folgenden Graphen $A$ einfach,
 $AB$ aber nicht.
 \begin{center}
@@ -447,9 +447,11 @@ ist er zusammengesetzt.
 Im obigen Beispiel also der Schlüssel $AB$.
 
 Ein Schüssel ist minimal,
-wenn es keine kleineren Schlüssel
-im Sinne der Teilmengenordnung \enquote{$\subseteq$} gibt.
-Z.B ist hier der Schlüssel $AB$ minimal, $ABC$ aber nicht.
+wenn es keinen kleineren Schlüssel
+im Sinne der Teilmengenordnung
+\enquote{$\subseteq$} gibt.
+Z.B ist hier der Schlüssel $AB$ minimal,
+$ABC$ aber nicht.
 \begin{center}
 \tikz{
     \node[] (abc) at (0,0)   {$ABC$};
@@ -492,7 +494,7 @@ Hier nochmal die Hierarchie in einer Liste:
 \end{enumerate}
 
 Jedes Attribut,
-das teil eines beliebigen SK ist,
+das Teil eines beliebigen SK ist,
 nennen wir \enquote{Primattribut}.
 Alle anderen nennen wir dementsprechend
 \enquote{Nichtprimattribute}.
@@ -500,8 +502,8 @@ Alle anderen nennen wir dementsprechend
 \section*{Bestimmen der Schlüsselkandidaten}
 Wir wollen uns an folgenden Beispiel anschauen,
 wie man SKs aus dem Graphen zu eine
-funktionelle Abhängigkeitsmenge auslesen kann.
-Gegeben also die funktionellen Abhängigkeiten:
+funktionale Abhängigkeitsmenge auslesen kann.
+Gegeben also die funktionalen Abhängigkeiten:
 $$
     A  \to C,\;
     B  \to DE,\;
@@ -545,9 +547,11 @@ Und deren Graph:
 Bevor wir uns weitere Gedanken machen,
 sollte uns zwei Dinge beim betrachten des Graphen auffallen:
 \begin{enumerate}
-    \item Der Knoten $B$ kann von keinem anderen Knoten erreicht werden.
-        Damit muss er teil jedes SKs sein.
-    \item Die Knoten $D$ und $G$ haben keine ausgehenden Kanten.
+    \item Der Knoten $B$ kann von keinem
+        anderen Knoten aus erreicht werden.
+        Damit muss er Teil jedes SKs sein.
+    \item Die Knoten $D$ und $G$ haben
+        keine ausgehenden Kanten.
         Sie sind für die SKs uninteressant.
 \end{enumerate}
 Wir wollen die Hülle aller noch relevanten Knoten berechnen:
@@ -574,23 +578,23 @@ $$
 
 Dieser Spruch soll dabei unterschützen,
 sich die ersten drei Normalformen zu merken.
-Wir werden uns diese im folgenden anschauen.
+Wir werden uns diese im Folgenden anschauen.
 Wir werden uns auch überlegen,
-welche eigenschaften die Graphen haben müssen
+welche Eigenschaften die Graphen haben müssen
 um eine Normalform zu erfüllen.
 
 \subsection*{1. Normalform: The key}
 \emph{Eine Relation ist in 1. Normalform,
     wenn alle Attributes Atomar sind.}
 
-Damit man überhaupt funktionelle Abhängigkeiten
-und dann Schlüssel
+Damit man überhaupt funktionale Abhängigkeiten
+und darüber Schlüssel
 (daher \enquote{The Key}) bestimmen kann,
 darf in einer Spalte immer nur genau ein Wert stehen. 
 
 Da wir uns hauptsächlich mit
-funktionellen Abhängigkeiten beschäftigen,
-gehen wir um weiteren Verlauf davon aus,
+funktionalen Abhängigkeiten beschäftigen,
+gehen wir im weiteren Verlauf davon aus,
 dass alle Relation in 1. Normalform sind.
 
 \subsection*{2. Normalform: The whole key}
@@ -604,7 +608,7 @@ vollständigen Abhängigkeit definieren.
 Ein Attribut ist genau dann vollständigen
 von einer Attributmenge abhängen,
 wenn man kein Attribut aus der Attributmenge entfernen kann,
-ohne die Abhängigkeit zu verlieren.
+ohne die funktionale Abhängigkeit zu verlieren.
 
 Im folgenden Beispiel ist $C$ vollständig von $AB$ abhängig:
 \begin{center}
@@ -613,7 +617,7 @@ Im folgenden Beispiel ist $C$ vollständig von $AB$ abhängig:
     "$A$" -> "$D$"
 };
 \end{center}
-$D$ hängt schon von $A$ ab,
+$D$ hängt schon von $A$ ab
 und ist damit nur partiell von $AB$ abhängig.
 
 \subsection*{3. Normalform: And nothing but the key}
@@ -646,18 +650,18 @@ gilt.
 
 \subsection*{Beispiele}
 
-Die folgenden funktionellen Abhängigkeiten
+Die folgenden funktionalen Abhängigkeiten
 sind nur in 1. Normalform:
 \begin{center}
 \tikz\graph{
-    "$AC$" -> {"$B$", "$A$"};
+    "$AB$" -> {"$B$", "$A$"};
     "$A$" -> "$B$"
 
 };
 \end{center}
 $B$ ist partiell von $AB$ abhängig.
 
-Hier ist eine funktionelle Abhängigkeitsmenge
+Hier ist eine funktionale Abhängigkeitsmenge
 in 2. Normalform:
 \begin{center}
 \tikz\graph{
@@ -667,7 +671,7 @@ in 2. Normalform:
 Es gibt keine partiellen Abhängigkeiten,
 aber $E$ ist transitiv von $A$ abhängig.
 
-Und nun funktionelle Abhängigkeiten in 3. Normalform:
+Und nun funktionale Abhängigkeiten in 3. Normalform:
 \begin{center}
 \tikz\graph{
     "$A$" -> {"$B$", "$C$" -> "$D$", "$E$"};
@@ -680,7 +684,7 @@ da auch $C \to A$ gilt.
 
 \section*{Normalisieren}
 Wir wollen uns nun anschauen,
-wie man die jede funktionelle Abhängigkeitsmenge
+wie man die jede funktionale Abhängigkeitsmenge
 in die 3. Normalform bringen kann.
 
 \subsection*{Löschen überflüssiger Kanten}
@@ -779,7 +783,7 @@ Jede Kante ist essentiell und
 weitere Kanten machen es nur wieder schlechter.
 
 Der Trick ist, das wir hier zum
-erstem mal unseren Graphen aufteilen.
+ersten mal unseren Graphen aufteilen.
 Und zwar nicht nur den:
 Tatsächlich können wir jetzt ablesen,
 in welche Tabellen wir unsere ursprüngliche Relation
@@ -794,7 +798,7 @@ Wir teilen immer bei den transitiven Abhängigkeiten auf:
 \end{center}
 Gemeint ist, dass die Attribute $B'$ und $C'$ jeweils Kopien 
 in einer anderen Tabelle sind.
-Wir haben also aus der einen Relation $ABCDE$
+Wir haben also aus der einen Relation $ABCDE$,
 die drei Relationen $C'D$, $ABC$ und $B'E$ gemacht,
 sodass jede Tabelle die 3. Normalform erfüllt.
 
@@ -802,12 +806,12 @@ sodass jede Tabelle die 3. Normalform erfüllt.
 Wir haben uns jetzt schon abgeschaut,
 wie man intuitiv eine Relation normalisieren kann.
 Der Synthesealgorithmus soll uns dabei helfen,
-einige Sonderfälle zu beachten.
+einige Sonderfälle richtig zu behandeln.
 
 Man beachte, dass der Synthesealgorithmus nicht
 für Graphen entworfen wurde,
 sondern direkt auf den
-funktionellen Abhängigkeiten arbeitet.
+funktionalen Abhängigkeiten arbeitet.
 Wir haben daher einige Schritte zusammengefasst,
 während wir andere weiter unterteilt haben.
 
@@ -815,7 +819,7 @@ Hier also die Schritte des Synthesealgorithmus:
 \begin{enumerate}
 \item Linksreduktion:
     Ziel ist, die linke Seite einer
-    funktionellen Abhängigkeit zu vereinfachen.
+    funktionalen Abhängigkeit zu vereinfachen.
     Z.B. wird aus
     $$
         AC \to B,\;
@@ -829,7 +833,7 @@ Hier also die Schritte des Synthesealgorithmus:
         D \to BC
     $$
     Das ist genau das \enquote{Verschlucken},
-    von dem ich zuvor geredet habe. Aus
+    das wir zuvor entdeckt habe. Aus
     \begin{center}
     \tikz\graph[clockwise=5, radius=1cm]{
         {"$A$", "$AC$", "$C$", "$B$", "$D$"};
@@ -856,7 +860,7 @@ Hier also die Schritte des Synthesealgorithmus:
         D \to C
     $$
     gegeben, kann das $C$ in der
-    ersten funktionellen Abhängigkeit
+    ersten funktionalen Abhängigkeit
     weggelassen werden.
     $$
         A \to B,\;
@@ -884,10 +888,11 @@ Hier also die Schritte des Synthesealgorithmus:
     Dieser Schritt entfällt,
     da wir es in unseren Graphen sowieso machen.
 
-\item Zusammenfassung von funktionellen Abhängigkeiten
+\item Zusammenfassung von funktionalen Abhängigkeiten
     mit gleichen linken Seiten:
     Dieser Schritt entfällt auch.
-    In unseren Graphen gibt es nur eine linke Seite.
+    In unseren Graphen gibt es
+    jede linke Seite nur ein mal.
 
 \item Falls nötig, hinzufügen eines Schlüsselknoten:
     Gehen wir davon aus,
@@ -944,7 +949,7 @@ Hier also die Schritte des Synthesealgorithmus:
     die Werte von $C$ bestimmt sind,
     sondern auch durch $C$ die Werte von $A$.
     Damit können Werte von $A$ und $C$ immer
-    nur in paaren auftauchen. \
+    nur in Paaren auftauchen. \
     
     Ähnliche Argumente gelten für $AF$ und $CF$.
     Wir können diese drei Knoten damit
@@ -959,13 +964,16 @@ Hier also die Schritte des Synthesealgorithmus:
     };
     \end{center}
     Dieser Schritt ist äquivalent zum Schritt
-    \enquote{Fasse Relationen zusammen} des Synthesealgorithmus.
+    \enquote{Fasse Relationen zusammen}
+    des Synthesealgorithmus.
 
-\item Erzeuge eine Relation pro funktionellen Abhängigkeit.
-    Das ist der letzte Schritt fürs Aufteilen transitiver Abhängigkeiten gewesen.
+\item Erzeuge eine Relation pro funktionalen Abhängigkeit:
+    Das ist der letzte Schritt beim
+    Aufteilen transitiver Abhängigkeiten.
     Jeder Knoten, der ausgehende Kanten hat,
-    bekommst eine funktionellen Abhängigkeit
-    mit seinen direkten Nachbarn. 
+    bekommst eine funktionalen Abhängigkeit
+    mit seinen alles direkten Nachbarn
+    auf der rechten Seite. 
     Aus dem Graphen
     \begin{center}
     \tikz\graph{
@@ -973,12 +981,12 @@ Hier also die Schritte des Synthesealgorithmus:
     };
     \end{center}
     erhalten wir beispielsweise
-    die funktionellen Abhängigkeiten
+    die funktionalen Abhängigkeiten
     $$
         B \to AC,\;
         C' \to D
     $$
-    Jede funktionelle Abhängigkeit gibt uns dann genau eine Relation.
+    Jede funktionale Abhängigkeit gibt uns dann genau eine Relation.
     Wir erhalten also die zwei Relationen
     $$
         ABC,\; C'D
