@@ -2,7 +2,6 @@
 
 % TODO: Replace Ai with { A0, ..., An } thoughout
 % TODO: Write out all Sets, ABC -> { A, B, C }
-% TODO: Try out clockwise placement
 
 \usepackage{babel}
 \usepackage{csquotes}
@@ -436,8 +435,9 @@ gdw. er nur ein Element hat.
 Z.B. ist im folgenden Graphen $A$ einfach,
 $AB$ aber nicht.
 \begin{center}
-\tikz\graph{
-    "$AB$" -> "$A$" -> {"$B$", "$C$"}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$AB$", "$A$", "$B$", "$C$"};
+    "$AB$" -> {"$A$" -> "$C$"} -> "$B$";
 };
 \end{center}
 Ist ein Schlüssel nicht einfach,
@@ -451,20 +451,12 @@ im Sinne der Teilmengenordnung
 Z.B ist hier der Schlüssel $AB$ minimal,
 $ABC$ aber nicht.
 \begin{center}
-\tikz{
-    \node[] (abc) at (0,0)   {$ABC$};
-    \node[] (ab)  at (1.2,0) {$AB$};
-    \node[] (c)   at (0, -1) {$C$};
-    \node[] (d)   at (1,-1)  {$D$};
-
-    \graph{
-        (abc) -> (ab);
-        (ab) -> (c);
-        (ab) -> (d);
-    }
-}
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$ABC$", "$AB$", "$C$", "$D$"};
+    "$ABC$" -> "$AB$";
+    "$AB$" -> {"$C$", "$D$"};
+};
 \end{center}
-
 Ein Schlüssel ist trivial,
 gdw. er alle Attribute in der Relation beinhaltet.
 Im obigen Beispiel wäre also $ABCD$ der triviale Schlüssel.
@@ -511,34 +503,15 @@ $$
 $$
 Und deren Graph:
 \begin{center}
-    \tikz{
-        \node[] (a)  at (0,    0)     {$A$};
-        \node[] (c)  at (0,    -1.2)  {$C$};
-        \node[] (b)  at (0,    -2.4)  {$B$};
-        \node[] (d)  at (-1.2, -2.4)  {$D$};
-        \node[] (e)  at (-2.4, -2.4)  {$E$};
-        \node[] (f)  at (-2.4, -1.2)  {$F$};
-        \node[] (g)  at (-2.4, -0.0)  {$G$};
-        \node[] (fg)  at (-1.2,   -0.0)  {$FG$};
-
-        \graph{
-            (a) -> (c);
-            (a) -> (f);
-
-            (b) -> (d);
-            (b) ->[bend right] (e);
-
-            (e) ->[bend left] (g);
-
-            (f) -> (g);
-
-            (fg) -> (f);
-            (fg) -> (g);
-            (fg) -> (a);
-            
-            (c) -> (f);
-        }   
-    }       
+\tikz\graph[clockwise=8, radius=2cm]{
+    {"$A$", "$C$", "$F$", "$E$", "$B$", "$D$", "$G$", "$FG$"};
+    "$A$" -> {"$C$", "$F$"};
+    "$B$" -> {"$E$", "$D$"};
+    "$C$" -> "$F$";
+    "$E$" -> "$G$";
+    "$F$" -> "$G$";
+    "$FG$" -> {"$F$", "$G$", "$A$"};
+};
 \end{center}
 Bevor wir uns weitere Gedanken machen,
 sollte uns zwei Dinge beim betrachten des Graphen auffallen:
@@ -608,7 +581,8 @@ ohne die funktionale Abhängigkeit zu verlieren.
 
 Im folgenden Beispiel ist $C$ vollständig von $AB$ abhängig:
 \begin{center}
-\tikz\graph{
+\tikz\graph[clockwise=4, radius=1cm]{
+    {"$A$", "$AB$", "$C$", "$D$"};
     "$A$" <- "$AB$" -> {"$C$", "$D$"};
     "$A$" -> "$D$"
 };
@@ -649,10 +623,10 @@ gilt.
 Die folgenden funktionalen Abhängigkeiten
 sind nur in 1. Normalform:
 \begin{center}
-\tikz\graph{
+\tikz\graph[clockwise=3, radius=1cm]{
+    {"$AB$", "$B$", "$A$"};
     "$AB$" -> {"$B$", "$A$"};
     "$A$" -> "$B$"
-
 };
 \end{center}
 $B$ ist partiell von $AB$ abhängig.
@@ -660,7 +634,8 @@ $B$ ist partiell von $AB$ abhängig.
 Hier ist eine funktionale Abhängigkeitsmenge
 in 2. Normalform:
 \begin{center}
-\tikz\graph{
+\tikz\graph[clockwise=5, radius=1cm]{
+    {"$A$", "$B$", "$C$", "$D$", "$E$"};
     "$A$" -> {"$B$", "$C$", "$D$" -> "$E$"};
 };
 \end{center}
@@ -669,9 +644,10 @@ aber $E$ ist transitiv von $A$ abhängig.
 
 Und nun funktionale Abhängigkeiten in 3. Normalform:
 \begin{center}
-\tikz\graph{
+\tikz\graph[clockwise=5, radius=1cm]{
+    {"$A$", "$B$", "$C$", "$D$", "$E$"};
     "$A$" -> {"$B$", "$C$" -> "$D$", "$E$"};
-    "$C$" ->[bend right] "$A$"
+    "$C$" ->[bend left] "$A$"
 };
 \end{center}
 Es gibt keine partiellen Abhängigkeiten
